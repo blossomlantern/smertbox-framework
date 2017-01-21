@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smertbox.security.rolegroup.mapper.SysRolegroupMapper" >
+  <resultMap id="BaseResultMap" type="com.smertbox.security.rolegroup.model.SysRolegroup" >
+    <id column="rg_id" property="rgId" jdbcType="VARCHAR" />
+    <result column="rg_name" property="rgName" jdbcType="VARCHAR" />
+    <result column="rg_desc" property="rgDesc" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Page_Where_Clause">
+  	  <if test="rgName != null and rgName != ''" >
+       and rg_name like '%${rgName}%'
+      </if>
+      <if test="rgDesc != null and rgDesc != ''" >
+       and rg_desc = #{rgDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="beginCtTime != null and beginCtTime != '' and endCtTime != null and endCtTime != ''" >
+       and create_time between #{beginCtTime,jdbcType=TIMESTAMP} and #{endCtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null and createTime != ''" >
+       and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="note != null and note != ''" >
+       and note = #{note,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    rg_id, rg_name, rg_desc, create_time, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smertbox.security.rolegroup.model.SysRolegroupExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_rolegroup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_rolegroup
+    where rg_id = #{rgId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_rolegroup
+    where rg_id = #{rgId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smertbox.security.rolegroup.model.SysRolegroupExample" >
+    delete from sys_rolegroup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smertbox.security.rolegroup.model.SysRolegroup" >
+    insert into sys_rolegroup (rg_id, rg_name, rg_desc, 
+       create_time, note
+      )
+    values (#{rgId,jdbcType=VARCHAR}, #{rgName,jdbcType=VARCHAR}, #{rgDesc,jdbcType=VARCHAR}, 
+       #{createTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.smertbox.security.rolegroup.model.SysRolegroup" >
+    insert into sys_rolegroup
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rgId != null" >
+        rg_id,
+      </if>
+      <if test="rgName != null" >
+        rg_name,
+      </if>
+      <if test="rgDesc != null" >
+        rg_desc,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rgId != null" >
+        #{rgId,jdbcType=VARCHAR},
+      </if>
+      <if test="rgName != null" >
+        #{rgName,jdbcType=VARCHAR},
+      </if>
+      <if test="rgDesc != null" >
+        #{rgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smertbox.security.rolegroup.model.SysRolegroupExample" resultType="java.lang.Integer" >
+    select count(*) from sys_rolegroup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_rolegroup
+    <set >
+      <if test="record.rgId != null" >
+        rg_id = #{record.rgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rgName != null" >
+        rg_name = #{record.rgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rgDesc != null" >
+        rg_desc = #{record.rgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_rolegroup
+    set rg_id = #{record.rgId,jdbcType=VARCHAR},
+      rg_name = #{record.rgName,jdbcType=VARCHAR},
+      rg_desc = #{record.rgDesc,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smertbox.security.rolegroup.model.SysRolegroup" >
+    update sys_rolegroup
+    <set >
+      <if test="rgName != null" >
+        rg_name = #{rgName,jdbcType=VARCHAR},
+      </if>
+      <if test="rgDesc != null" >
+        rg_desc = #{rgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rg_id = #{rgId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smertbox.security.rolegroup.model.SysRolegroup" >
+    update sys_rolegroup
+    set rg_name = #{rgName,jdbcType=VARCHAR},
+      rg_desc = #{rgDesc,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR}
+    where rg_id = #{rgId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectPage" parameterType="com.smertbox.security.rolegroup.model.SysRolegroup" resultMap="BaseResultMap">
+  	select * from sys_rolegroup where 1=1
+  	<include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectPageSize" parameterType="com.smertbox.security.rolegroup.model.SysRolegroup" resultType="java.lang.Integer">
+  select count(*) from sys_rolegroup 
+  where 1=1  
+  <include refid="Page_Where_Clause"/>
+  </select>
+  
+  <select id="selectPageByOrgId" resultMap="BaseResultMap">
+  SELECT * FROM sys_rolegroup r 
+  WHERE r.rg_id IN (SELECT i.rg_id FROM sys_org_rolegroup i WHERE i.org_id in 
+  <foreach collection="orgs" item="orgId" open="(" separator="," close=")" index="index">
+  #{orgId}
+  </foreach>
+  ) 
+  ORDER BY r.rg_name 
+  </select>
+  
+</mapper>

@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smertbox.security.privilege.mapper.SysPrivilegeMapper" >
+  <resultMap id="BaseResultMap" type="com.smertbox.security.privilege.model.SysPrivilege" >
+    <id column="pvg_id" property="pvgId" jdbcType="VARCHAR" />
+    <result column="pvg_pid" property="pvgPid" jdbcType="VARCHAR" />
+    <result column="pvg_name" property="pvgName" jdbcType="VARCHAR" />
+    <result column="pvg_type" property="pvgType" jdbcType="VARCHAR" />
+    <result column="pvg_desc" property="pvgDesc" jdbcType="VARCHAR" />
+    <result column="allow_edit" property="allowEdit" jdbcType="DECIMAL" />
+    <result column="allow_del" property="allowDel" jdbcType="DECIMAL" />
+    <result column="ct_user_id" property="ctUserId" jdbcType="VARCHAR" />
+    <result column="ct_time" property="ctTime" jdbcType="TIMESTAMP" />
+    <result column="up_user_id" property="upUserId" jdbcType="VARCHAR" />
+    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="del" property="del" jdbcType="DECIMAL" />
+  </resultMap>
+  
+   <sql id="Page_Where_Clause" >
+   	  <if test="pvgId != null and pvgId != ''" >
+       and pvg_id = #{pvgId,jdbcType=VARCHAR}
+      </if>
+      <if test="pvgPid != null and pvgPid != ''" >
+       and pvg_pid = #{pvgPid,jdbcType=VARCHAR}
+      </if>
+      <if test="pvgName != null and pvgName != ''" >
+       and pvg_name like '%${pvgName}%'
+      </if>
+      <if test="pvgType != null and pvgType != ''" >
+       and pvg_type = #{pvgType,jdbcType=VARCHAR}
+      </if>
+      <if test="pvgDesc != null and pvgDesc != ''" >
+       and pvg_desc = #{pvgDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="allowEdit != null and allowEdit != ''" >
+       and allow_edit = #{allowEdit,jdbcType=DECIMAL}
+      </if>
+      <if test="allowDel != null and allowDel != ''" >
+       and allow_del = #{allowDel,jdbcType=DECIMAL}
+      </if>
+      <if test="ctUserId != null and ctUserId != ''" >
+       and ct_user_id = #{ctUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="ctTime != null and ctTime != ''" >
+       and ct_time = #{ctTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="beginCtTime != null and beginCtTime != '' and endCtTime != null and endCtTime != ''" >
+       and ct_time between #{beginCtTime,jdbcType=TIMESTAMP} and #{endCtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="upUserId != null and upUserId != ''" >
+       and up_user_id = #{upUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="upTime != null and upTime != ''" >
+       and up_time = #{upTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sort != null and sort != ''" >
+       and sort = #{sort,jdbcType=VARCHAR}
+      </if>
+      <if test="note != null and note != ''" >
+       and note = #{note,jdbcType=VARCHAR}
+      </if>
+       and del = 0
+   </sql>
+   
+   <select id="selectAll" resultMap="BaseResultMap" >
+    select * from sys_privilege where del = 0
+   </select>
+   
+   <select id="selectPageData" parameterType="com.smertbox.security.privilege.model.SysPrivilege" resultMap="BaseResultMap" >
+    select * from sys_privilege
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectPageDataSize" parameterType="com.smertbox.security.privilege.model.SysPrivilege" resultType="java.lang.Integer" >
+    select count(*) from sys_privilege
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+  </select>
+  
+  <select id="selectResourceTree" resultType="com.smertbox.security.privilege.model.PrivilegeNode">
+    SELECT pvg_id AS 'id',pvg_pid AS 'pId',pvg_name AS 'name'
+    FROM sys_privilege WHERE del=0
+  </select>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pvg_id, pvg_pid, pvg_name, pvg_type, pvg_desc, allow_edit, allow_del, ct_user_id, 
+    ct_time, up_user_id, up_time, sort, note, del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smertbox.security.privilege.model.SysPrivilegeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_privilege
+    where pvg_id = #{pvgId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_privilege
+    where pvg_id = #{pvgId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smertbox.security.privilege.model.SysPrivilegeExample" >
+    delete from sys_privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smertbox.security.privilege.model.SysPrivilege" >
+    insert into sys_privilege (pvg_id, pvg_pid, pvg_name, 
+      pvg_type, pvg_desc, allow_edit, 
+      allow_del, ct_user_id, ct_time, 
+      up_user_id, up_time, sort, 
+      note, del)
+    values (#{pvgId,jdbcType=VARCHAR}, #{pvgPid,jdbcType=VARCHAR}, #{pvgName,jdbcType=VARCHAR}, 
+      #{pvgType,jdbcType=VARCHAR}, #{pvgDesc,jdbcType=VARCHAR}, #{allowEdit,jdbcType=DECIMAL}, 
+      #{allowDel,jdbcType=DECIMAL}, #{ctUserId,jdbcType=VARCHAR}, #{ctTime,jdbcType=TIMESTAMP}, 
+      #{upUserId,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{del,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smertbox.security.privilege.model.SysPrivilege" >
+    insert into sys_privilege
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pvgId != null" >
+        pvg_id,
+      </if>
+      <if test="pvgPid != null" >
+        pvg_pid,
+      </if>
+      <if test="pvgName != null" >
+        pvg_name,
+      </if>
+      <if test="pvgType != null" >
+        pvg_type,
+      </if>
+      <if test="pvgDesc != null" >
+        pvg_desc,
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit,
+      </if>
+      <if test="allowDel != null" >
+        allow_del,
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id,
+      </if>
+      <if test="ctTime != null" >
+        ct_time,
+      </if>
+      <if test="upUserId != null" >
+        up_user_id,
+      </if>
+      <if test="upTime != null" >
+        up_time,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="del != null" >
+        del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pvgId != null" >
+        #{pvgId,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgPid != null" >
+        #{pvgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgName != null" >
+        #{pvgName,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgType != null" >
+        #{pvgType,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgDesc != null" >
+        #{pvgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="ctUserId != null" >
+        #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctTime != null" >
+        #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        #{del,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smertbox.security.privilege.model.SysPrivilegeExample" resultType="java.lang.Integer" >
+    select count(*) from sys_privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_privilege
+    <set >
+      <if test="record.pvgId != null" >
+        pvg_id = #{record.pvgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgPid != null" >
+        pvg_pid = #{record.pvgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgName != null" >
+        pvg_name = #{record.pvgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgType != null" >
+        pvg_type = #{record.pvgType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgDesc != null" >
+        pvg_desc = #{record.pvgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allowEdit != null" >
+        allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.allowDel != null" >
+        allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ctUserId != null" >
+        ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctTime != null" >
+        ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.upUserId != null" >
+        up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.upTime != null" >
+        up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.del != null" >
+        del = #{record.del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_privilege
+    set pvg_id = #{record.pvgId,jdbcType=VARCHAR},
+      pvg_pid = #{record.pvgPid,jdbcType=VARCHAR},
+      pvg_name = #{record.pvgName,jdbcType=VARCHAR},
+      pvg_type = #{record.pvgType,jdbcType=VARCHAR},
+      pvg_desc = #{record.pvgDesc,jdbcType=VARCHAR},
+      allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      sort = #{record.sort,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      del = #{record.del,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smertbox.security.privilege.model.SysPrivilege" >
+    update sys_privilege
+    <set >
+      <if test="pvgPid != null" >
+        pvg_pid = #{pvgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgName != null" >
+        pvg_name = #{pvgName,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgType != null" >
+        pvg_type = #{pvgType,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgDesc != null" >
+        pvg_desc = #{pvgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        allow_del = #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctTime != null" >
+        ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        up_user_id = #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        up_time = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        del = #{del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where pvg_id = #{pvgId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smertbox.security.privilege.model.SysPrivilege" >
+    update sys_privilege
+    set pvg_pid = #{pvgPid,jdbcType=VARCHAR},
+      pvg_name = #{pvgName,jdbcType=VARCHAR},
+      pvg_type = #{pvgType,jdbcType=VARCHAR},
+      pvg_desc = #{pvgDesc,jdbcType=VARCHAR},
+      allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      allow_del = #{allowDel,jdbcType=DECIMAL},
+      ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      up_user_id = #{upUserId,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      sort = #{sort,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      del = #{del,jdbcType=DECIMAL}
+    where pvg_id = #{pvgId,jdbcType=VARCHAR}
+  </update>
+</mapper>

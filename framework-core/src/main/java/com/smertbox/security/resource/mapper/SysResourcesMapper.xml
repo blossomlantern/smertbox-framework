@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smertbox.security.resource.mapper.SysResourcesMapper" >
+  <resultMap id="BaseResultMap" type="com.smertbox.security.resource.model.SysResources" >
+    <id column="res_id" property="resId" jdbcType="VARCHAR" />
+    <result column="res_pid" property="resPid" jdbcType="VARCHAR" />
+    <result column="res_name" property="resName" jdbcType="VARCHAR" />
+    <result column="res_desc" property="resDesc" jdbcType="VARCHAR" />
+    <result column="res_icon" property="resIcon" jdbcType="VARCHAR" />
+    <result column="res_url" property="resUrl" jdbcType="VARCHAR" />
+    <result column="res_type" property="resType" jdbcType="VARCHAR" />
+    <result column="res_target" property="resTarget" jdbcType="VARCHAR" />
+    <result column="allow_edit" property="allowEdit" jdbcType="DECIMAL" />
+    <result column="allow_del" property="allowDel" jdbcType="DECIMAL" />
+    <result column="ct_user_id" property="ctUserId" jdbcType="VARCHAR" />
+    <result column="ct_time" property="ctTime" jdbcType="TIMESTAMP" />
+    <result column="up_user_id" property="upUserId" jdbcType="VARCHAR" />
+    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="del" property="del" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <sql id="Page_Where_Clause" >
+      <if test="resId != null and resId != ''" >
+        and res_id = #{resId,jdbcType=VARCHAR}
+      </if>
+      <if test="resPid != null and resPid != ''" >
+        and res_pid = #{resPid,jdbcType=VARCHAR}
+      </if>
+      <if test="resName != null and resName != ''" >
+        and res_name like '%${resName}%'
+      </if>
+      <if test="resDesc != null and resDesc != ''" >
+        and res_desc = #{resDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="resIcon != null and resIcon != ''" >
+        and res_icon = #{resIcon,jdbcType=VARCHAR}
+      </if>
+      <if test="resUrl != null and resUrl != ''" >
+        and res_url = #{resUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="resType != null and resType != ''" >
+        and res_type = #{resType,jdbcType=VARCHAR}
+      </if>
+      <if test="resTarget != null and resTarget != ''" >
+        and res_target = #{resTarget,jdbcType=VARCHAR}
+      </if>
+      <if test="allowEdit != null and allowEdit != ''" >
+        and allow_edit = #{allowEdit,jdbcType=DECIMAL}
+      </if>
+      <if test="allowDel != null and allowDel != ''" >
+        and allow_del = #{allowDel,jdbcType=DECIMAL}
+      </if>
+      <if test="ctUserId != null and ctUserId != ''" >
+        and ct_user_id = #{ctUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="beginCtTime != null and beginCtTime != '' and endCtTime != null and endCtTime != ''" >
+        and ct_time between #{beginCtTime,jdbcType=TIMESTAMP} and #{endCtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="upUserId != null and upUserId != ''" >
+        and up_user_id = #{upUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="upTime != null and upTime != ''" >
+        and up_time = #{upTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sort != null and sort != ''" >
+        and sort = #{sort,jdbcType=VARCHAR}
+      </if>
+      <if test="note != null and note != ''" >
+        and note = #{note,jdbcType=VARCHAR}
+      </if>
+        and del = 0
+  </sql>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    res_id, res_pid, res_name, res_desc, res_icon, res_url, res_type, res_target, allow_edit, 
+    allow_del, ct_user_id, ct_time, up_user_id, up_time, sort, note, del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smertbox.security.resource.model.SysResourcesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_resources
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectResourceTree" parameterType="java.lang.String" resultType="com.smertbox.security.resource.model.ResourceNode">
+    SELECT res_id AS 'id',res_pid AS 'pId',res_name AS 'name'
+    <!-- ,(CASE res_id WHEN '0' THEN 'true' ELSE 'false' END) AS isParent -->
+    FROM sys_resources s WHERE del=0
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_resources
+    where res_id = #{resId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_resources
+    where res_id = #{resId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smertbox.security.resource.model.SysResourcesExample" >
+    delete from sys_resources
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smertbox.security.resource.model.SysResources" >
+    insert into sys_resources (res_id, res_pid, res_name, 
+      res_desc, res_icon, res_url, 
+      res_type, res_target, allow_edit, 
+      allow_del, ct_user_id, ct_time, 
+      up_user_id, up_time, sort, 
+      note, del)
+    values (#{resId,jdbcType=VARCHAR}, #{resPid,jdbcType=VARCHAR}, #{resName,jdbcType=VARCHAR}, 
+      #{resDesc,jdbcType=VARCHAR}, #{resIcon,jdbcType=VARCHAR}, #{resUrl,jdbcType=VARCHAR}, 
+      #{resType,jdbcType=VARCHAR}, #{resTarget,jdbcType=VARCHAR}, #{allowEdit,jdbcType=DECIMAL}, 
+      #{allowDel,jdbcType=DECIMAL}, #{ctUserId,jdbcType=VARCHAR}, #{ctTime,jdbcType=TIMESTAMP}, 
+      #{upUserId,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{del,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smertbox.security.resource.model.SysResources" >
+    insert into sys_resources
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resId != null" >
+        res_id,
+      </if>
+      <if test="resPid != null" >
+        res_pid,
+      </if>
+      <if test="resName != null" >
+        res_name,
+      </if>
+      <if test="resDesc != null" >
+        res_desc,
+      </if>
+      <if test="resIcon != null" >
+        res_icon,
+      </if>
+      <if test="resUrl != null" >
+        res_url,
+      </if>
+      <if test="resType != null" >
+        res_type,
+      </if>
+      <if test="resTarget != null" >
+        res_target,
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit,
+      </if>
+      <if test="allowDel != null" >
+        allow_del,
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id,
+      </if>
+      <if test="ctTime != null" >
+        ct_time,
+      </if>
+      <if test="upUserId != null" >
+        up_user_id,
+      </if>
+      <if test="upTime != null" >
+        up_time,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="del != null" >
+        del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resId != null" >
+        #{resId,jdbcType=VARCHAR},
+      </if>
+      <if test="resPid != null" >
+        #{resPid,jdbcType=VARCHAR},
+      </if>
+      <if test="resName != null" >
+        #{resName,jdbcType=VARCHAR},
+      </if>
+      <if test="resDesc != null" >
+        #{resDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="resIcon != null" >
+        #{resIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="resUrl != null" >
+        #{resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="resType != null" >
+        #{resType,jdbcType=VARCHAR},
+      </if>
+      <if test="resTarget != null" >
+        #{resTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="ctUserId != null" >
+        #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctTime != null" >
+        #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        #{del,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smertbox.security.resource.model.SysResourcesExample" resultType="java.lang.Integer" >
+    select count(*) from sys_resources
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from sys_resources where del = 0
+  </select>
+  
+  <select id="selectByUser" resultMap="BaseResultMap" parameterType="com.smertbox.security.user.model.SysUser">
+	SELECT 
+	  * 
+	FROM
+	  sys_resources r 
+	WHERE r.res_id IN 
+	(SELECT res_id FROM sys_res_pvg WHERE pvg_id IN 
+	(SELECT pvg_id FROM sys_role_privilege WHERE role_id IN 
+	(SELECT role_id FROM sys_user_role WHERE user_id IN 
+	(SELECT user_id FROM sys_user WHERE user_id = #{userId,jdbcType=VARCHAR} AND del = 0))))
+  </select>
+  
+  <select id="selectPageData" parameterType="com.smertbox.security.resource.model.SysResources" resultMap="BaseResultMap" >
+    select * from sys_resources
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectPageDataSize" parameterType="com.smertbox.security.resource.model.SysResources" resultType="java.lang.Integer" >
+    select count(*) from sys_resources
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+  </select>
+  
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_resources
+    <set >
+      <if test="record.resId != null" >
+        res_id = #{record.resId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resPid != null" >
+        res_pid = #{record.resPid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resName != null" >
+        res_name = #{record.resName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resDesc != null" >
+        res_desc = #{record.resDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resIcon != null" >
+        res_icon = #{record.resIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resUrl != null" >
+        res_url = #{record.resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resType != null" >
+        res_type = #{record.resType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resTarget != null" >
+        res_target = #{record.resTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allowEdit != null" >
+        allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.allowDel != null" >
+        allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ctUserId != null" >
+        ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctTime != null" >
+        ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.upUserId != null" >
+        up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.upTime != null" >
+        up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.del != null" >
+        del = #{record.del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_resources
+    set res_id = #{record.resId,jdbcType=VARCHAR},
+      res_pid = #{record.resPid,jdbcType=VARCHAR},
+      res_name = #{record.resName,jdbcType=VARCHAR},
+      res_desc = #{record.resDesc,jdbcType=VARCHAR},
+      res_icon = #{record.resIcon,jdbcType=VARCHAR},
+      res_url = #{record.resUrl,jdbcType=VARCHAR},
+      res_type = #{record.resType,jdbcType=VARCHAR},
+      res_target = #{record.resTarget,jdbcType=VARCHAR},
+      allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      sort = #{record.sort,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      del = #{record.del,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smertbox.security.resource.model.SysResources" >
+    update sys_resources
+    <set >
+      <if test="resPid != null" >
+        res_pid = #{resPid,jdbcType=VARCHAR},
+      </if>
+      <if test="resName != null" >
+        res_name = #{resName,jdbcType=VARCHAR},
+      </if>
+      <if test="resDesc != null" >
+        res_desc = #{resDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="resIcon != null" >
+        res_icon = #{resIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="resUrl != null" >
+        res_url = #{resUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="resType != null" >
+        res_type = #{resType,jdbcType=VARCHAR},
+      </if>
+      <if test="resTarget != null" >
+        res_target = #{resTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        allow_del = #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctTime != null" >
+        ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        up_user_id = #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        up_time = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        del = #{del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where res_id = #{resId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smertbox.security.resource.model.SysResources" >
+    update sys_resources
+    set res_pid = #{resPid,jdbcType=VARCHAR},
+      res_name = #{resName,jdbcType=VARCHAR},
+      res_desc = #{resDesc,jdbcType=VARCHAR},
+      res_icon = #{resIcon,jdbcType=VARCHAR},
+      res_url = #{resUrl,jdbcType=VARCHAR},
+      res_type = #{resType,jdbcType=VARCHAR},
+      res_target = #{resTarget,jdbcType=VARCHAR},
+      allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      allow_del = #{allowDel,jdbcType=DECIMAL},
+      ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      up_user_id = #{upUserId,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      sort = #{sort,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      del = #{del,jdbcType=DECIMAL}
+    where res_id = #{resId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByUserRole" parameterType="java.lang.String" resultMap="BaseResultMap" >
+	SELECT 
+	  * 
+	FROM
+	  sys_resources re 
+	WHERE re.res_id IN 
+	  (SELECT 
+	    v.res_id 
+	  FROM
+	    sys_res_pvg v 
+	  WHERE v.pvg_id IN 
+	    (SELECT 
+	      r.pvg_id 
+	    FROM
+	      sys_role_privilege r 
+	    WHERE r.role_id IN 
+	      (SELECT 
+	        r.role_id 
+	      FROM
+	        sys_user u 
+	        LEFT JOIN sys_user_role r 
+	          ON u.user_id = r.user_id 
+	      WHERE u.login_account = #{loginAccount,jdbcType=VARCHAR} 
+	      UNION
+	      SELECT 
+	        g.role_id 
+	      FROM
+	        sys_role_rolegroup g 
+	      WHERE g.rg_id IN 
+	        (SELECT 
+	          g.rg_id 
+	        FROM
+	          sys_user u 
+	          LEFT JOIN sys_user_rolegroup g 
+	            ON u.user_id = g.user_id 
+	        WHERE u.login_account = #{loginAccount,jdbcType=VARCHAR}))))
+	        	and del = 0
+  </select>
+  
+  <select id="selectByUserPosition" parameterType="java.lang.String" resultMap="BaseResultMap" >
+	SELECT 
+	  * 
+	FROM
+	  sys_resources re 
+	WHERE re.res_id IN 
+	  (SELECT 
+	    v.res_id 
+	  FROM
+	    sys_res_pvg v 
+	  WHERE v.pvg_id IN 
+	    (SELECT 
+	      p.pvg_id 
+	    FROM
+	      sys_pvg_pvggroup p 
+	    WHERE p.pg_id IN 
+	      (SELECT 
+	        g.pvggroup_id 
+	      FROM
+	        sys_role_pvggroup g 
+	      WHERE g.role_id IN 
+	        (SELECT 
+	          r.role_id 
+	        FROM
+	          sys_position_role r 
+	        WHERE r.position_id IN 
+	          (SELECT 
+	            p.position_id 
+	          FROM
+	            sys_user u 
+	            LEFT JOIN sys_user_position p 
+	              ON u.user_id = p.user_id 
+	          WHERE u.login_account = #{loginAccount,jdbcType=VARCHAR}) 
+	          UNION
+	          SELECT 
+	            g.role_id 
+	          FROM
+	            sys_role_rolegroup g 
+	          WHERE g.rg_id IN 
+	            (SELECT 
+	              r.rg_id 
+	            FROM
+	              sys_position_rolegroup r 
+	            WHERE r.position_id IN 
+	              (SELECT 
+	                p.position_id 
+	              FROM
+	                sys_user u 
+	                LEFT JOIN sys_user_position p 
+	                  ON u.user_id = p.user_id 
+	              WHERE u.login_account = #{loginAccount,jdbcType=VARCHAR}))))))
+	              	and del = 0
+  </select>
+  
+</mapper>

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smertbox.security.role.mapper.SysRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.smertbox.security.role.model.SysRole" >
+    <id column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <result column="role_pid" property="rolePid" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
+    <result column="role_type" property="roleType" jdbcType="VARCHAR" />
+    <result column="allow_edit" property="allowEdit" jdbcType="DECIMAL" />
+    <result column="allow_del" property="allowDel" jdbcType="DECIMAL" />
+    <result column="ct_user_id" property="ctUserId" jdbcType="VARCHAR" />
+    <result column="ct_time" property="ctTime" jdbcType="TIMESTAMP" />
+    <result column="up_user_id" property="upUserId" jdbcType="VARCHAR" />
+    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="del" property="del" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <sql id="Page_Where_Clause">
+  	  <if test="roleId != null and roleId != ''" >
+       and role_id=#{roleId,jdbcType=VARCHAR}
+      </if>
+      <if test="rolePid != null and rolePid != ''" >
+       and role_pid=#{rolePid,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null and roleName != ''" >
+       and role_name like '%${roleName}%'
+      </if>
+      <if test="roleDesc != null and roleDesc != ''" >
+       and role_desc=#{roleDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="roleType != null and roleType != ''" >
+       and role_type=#{roleType,jdbcType=VARCHAR}
+      </if>
+      <if test="allowEdit != null and allowEdit != ''" >
+       and allow_edit=#{allowEdit,jdbcType=DECIMAL}
+      </if>
+      <if test="allowDel != null and allowDel != ''" >
+       and allow_del=#{allowDel,jdbcType=DECIMAL}
+      </if>
+      <if test="ctUserId != null and ctUserId != ''" >
+       and ct_user_id=#{ctUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="ctTime != null and ctTime != ''" >
+       and ct_time=#{ctTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="beginCtTime != null and beginCtTime != '' and endCtTime != null and endCtTime != ''" >
+       and ct_time between #{beginCtTime,jdbcType=TIMESTAMP} and #{endCtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="upUserId != null and upUserId != ''" >
+       and up_user_id= #{upUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="upTime != null and upTime != ''" >
+       and up_time=#{upTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sort != null and sort != ''" >
+       and sort=#{sort,jdbcType=VARCHAR}
+      </if>
+      <if test="note != null and note != ''" >
+       and note=#{note,jdbcType=VARCHAR}
+      </if>
+       and del = 0
+  </sql>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    role_id, role_pid, role_name, role_desc, role_type, allow_edit, allow_del, ct_user_id, 
+    ct_time, up_user_id, up_time, sort, note, del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smertbox.security.role.model.SysRoleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_role
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smertbox.security.role.model.SysRoleExample" >
+    delete from sys_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smertbox.security.role.model.SysRole" >
+    insert into sys_role (role_id, role_pid, role_name, 
+      role_desc, role_type, allow_edit, 
+      allow_del, ct_user_id, ct_time, 
+      up_user_id, up_time, sort, 
+      note, del)
+    values (#{roleId,jdbcType=VARCHAR}, #{rolePid,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{roleDesc,jdbcType=VARCHAR}, #{roleType,jdbcType=VARCHAR}, #{allowEdit,jdbcType=DECIMAL}, 
+      #{allowDel,jdbcType=DECIMAL}, #{ctUserId,jdbcType=VARCHAR}, #{ctTime,jdbcType=TIMESTAMP}, 
+      #{upUserId,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{del,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smertbox.security.role.model.SysRole" >
+    insert into sys_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="rolePid != null" >
+        role_pid,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="roleDesc != null" >
+        role_desc,
+      </if>
+      <if test="roleType != null" >
+        role_type,
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit,
+      </if>
+      <if test="allowDel != null" >
+        allow_del,
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id,
+      </if>
+      <if test="ctTime != null" >
+        ct_time,
+      </if>
+      <if test="upUserId != null" >
+        up_user_id,
+      </if>
+      <if test="upTime != null" >
+        up_time,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="del != null" >
+        del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="rolePid != null" >
+        #{rolePid,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null" >
+        #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        #{roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="ctUserId != null" >
+        #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctTime != null" >
+        #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        #{del,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smertbox.security.role.model.SysRoleExample" resultType="java.lang.Integer" >
+    select count(*) from sys_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_role
+    <set >
+      <if test="record.roleId != null" >
+        role_id = #{record.roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rolePid != null" >
+        role_pid = #{record.rolePid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleName != null" >
+        role_name = #{record.roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleDesc != null" >
+        role_desc = #{record.roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleType != null" >
+        role_type = #{record.roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allowEdit != null" >
+        allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.allowDel != null" >
+        allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ctUserId != null" >
+        ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctTime != null" >
+        ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.upUserId != null" >
+        up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.upTime != null" >
+        up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.del != null" >
+        del = #{record.del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_role
+    set role_id = #{record.roleId,jdbcType=VARCHAR},
+      role_pid = #{record.rolePid,jdbcType=VARCHAR},
+      role_name = #{record.roleName,jdbcType=VARCHAR},
+      role_desc = #{record.roleDesc,jdbcType=VARCHAR},
+      role_type = #{record.roleType,jdbcType=VARCHAR},
+      allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      sort = #{record.sort,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      del = #{record.del,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smertbox.security.role.model.SysRole" >
+    update sys_role
+    <set >
+      <if test="rolePid != null" >
+        role_pid = #{rolePid,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null" >
+        role_desc = #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        role_type = #{roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        allow_del = #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctTime != null" >
+        ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        up_user_id = #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        up_time = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        del = #{del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smertbox.security.role.model.SysRole" >
+    update sys_role
+    set role_pid = #{rolePid,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      role_desc = #{roleDesc,jdbcType=VARCHAR},
+      role_type = #{roleType,jdbcType=VARCHAR},
+      allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      allow_del = #{allowDel,jdbcType=DECIMAL},
+      ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      up_user_id = #{upUserId,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      sort = #{sort,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      del = #{del,jdbcType=DECIMAL}
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from sys_role where del = 0
+  </select>
+  
+  <select id="selectPageData" resultMap="BaseResultMap" parameterType="com.smertbox.security.role.model.SysRole">
+  	select * from sys_role
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectPageDataSize" resultType="java.lang.Integer" parameterType="com.smertbox.security.role.model.SysRole">
+  	select count(*) from sys_role
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+  </select>
+  
+  <select id="selectPageByOrgId" resultMap="BaseResultMap">
+  	SELECT * FROM sys_role r
+	WHERE r.role_id IN (SELECT i.role_id FROM sys_org_role i WHERE i.org_id in 
+	<foreach collection="orgs" item="orgId" open="(" separator="," close=")" index="index">
+  	#{orgId}
+  	</foreach>
+	)
+    order by r.role_name
+  </select>
+  
+</mapper>

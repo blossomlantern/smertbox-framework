@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smertbox.security.organization.mapper.SysOrganizationMapper" >
+  <resultMap id="BaseResultMap" type="com.smertbox.security.organization.model.SysOrganization" >
+    <id column="org_id" property="orgId" jdbcType="VARCHAR" />
+    <result column="org_pid" property="orgPid" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="org_desc" property="orgDesc" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="addr" property="addr" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="postcode" property="postcode" jdbcType="VARCHAR" />
+    <result column="inner_tel" property="innerTel" jdbcType="VARCHAR" />
+    <result column="outer_tel" property="outerTel" jdbcType="VARCHAR" />
+    <result column="charge" property="charge" jdbcType="VARCHAR" />
+    <result column="assistant" property="assistant" jdbcType="VARCHAR" />
+    <result column="org_type" property="orgType" jdbcType="VARCHAR" />
+    <result column="org_level" property="orgLevel" jdbcType="VARCHAR" />
+    <result column="org_logo" property="orgLogo" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
+    <result column="ct_user_id" property="ctUserId" jdbcType="VARCHAR" />
+    <result column="ct_time" property="ctTime" jdbcType="TIMESTAMP" />
+    <result column="up_user_id" property="upUserId" jdbcType="VARCHAR" />
+    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="allow_edit" property="allowEdit" jdbcType="DECIMAL" />
+    <result column="allow_del" property="allowDel" jdbcType="DECIMAL" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="del" property="del" jdbcType="DECIMAL" />
+  </resultMap>
+  
+   <sql id="Page_Where_Clause">
+  	  <if test="orgPid != null and orgPid != ''" >
+       and org_pid = #{orgPid,jdbcType=VARCHAR}
+      </if>
+      <if test="orgName != null and orgName != ''" >
+       and org_name like '%${orgName}%'
+      </if>
+      <if test="orgDesc != null and orgDesc != ''" >
+       and org_desc = #{orgDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="country != null and country != ''" >
+       and country = #{country,jdbcType=VARCHAR}
+      </if>
+      <if test="province != null and province != ''" >
+       and province = #{province,jdbcType=VARCHAR}
+      </if>
+      <if test="city != null and city != ''" >
+       and city = #{city,jdbcType=VARCHAR}
+      </if>
+      <if test="district != null and district != ''" >
+       and district = #{district,jdbcType=VARCHAR}
+      </if>
+      <if test="addr != null and addr != ''" >
+       and addr = #{addr,jdbcType=VARCHAR}
+      </if>
+      <if test="fax != null and fax != ''" >
+       and fax = #{fax,jdbcType=VARCHAR}
+      </if>
+      <if test="postcode != null and postcode != ''" >
+       and postcode = #{postcode,jdbcType=VARCHAR}
+      </if>
+      <if test="innerTel != null and innerTel != ''" >
+       and inner_tel = #{innerTel,jdbcType=VARCHAR}
+      </if>
+      <if test="outerTel != null and outerTel != ''" >
+       and outer_tel = #{outerTel,jdbcType=VARCHAR}
+      </if>
+      <if test="charge != null and charge != ''" >
+       and charge = #{charge,jdbcType=VARCHAR}
+      </if>
+      <if test="assistant != null and assistant != ''" >
+       and assistant = #{assistant,jdbcType=VARCHAR}
+      </if>
+      <if test="orgType != null and orgType != ''" >
+       and org_type = #{orgType,jdbcType=VARCHAR}
+      </if>
+      <if test="orgLevel != null and orgLevel != ''" >
+       and org_level = #{orgLevel,jdbcType=VARCHAR}
+      </if>
+      <if test="orgLogo != null and orgLogo != ''" >
+       and org_logo = #{orgLogo,jdbcType=VARCHAR}
+      </if>
+      <if test="sort != null and sort != ''" >
+       and sort = #{sort,jdbcType=VARCHAR}
+      </if>
+      <if test="ctUserId != null and ctUserId != ''" >
+       and ct_user_id = #{ctUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="beginCtTime != null and beginCtTime != '' and endCtTime != null and endCtTime != ''" >
+        and ct_time between #{beginCtTime,jdbcType=TIMESTAMP} and #{endCtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="ctTime != null and ctTime != ''" >
+       and ct_time = #{ctTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="upUserId != null and upUserId != ''" >
+       and up_user_id = #{upUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="upTime != null and upTime != ''" >
+       and up_time = #{upTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="allowEdit != null and allowEdit != ''" >
+       and allow_edit = #{allowEdit,jdbcType=DECIMAL}
+      </if>
+      <if test="allowDel != null and allowDel != ''" >
+       and allow_del = #{allowDel,jdbcType=DECIMAL}
+      </if>
+      <if test="note != null and note != ''" >
+       and note = #{note,jdbcType=VARCHAR}
+      </if>
+       and del = 0
+  </sql>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    org_id, org_pid, org_name, org_desc, country, province, city, district, addr, fax, 
+    postcode, inner_tel, outer_tel, charge, assistant, org_type, org_level, org_logo, 
+    sort, ct_user_id, ct_time, up_user_id, up_time, allow_edit, allow_del, note, del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smertbox.security.organization.model.SysOrganizationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_organization
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_organization
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_organization
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smertbox.security.organization.model.SysOrganizationExample" >
+    delete from sys_organization
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smertbox.security.organization.model.SysOrganization" >
+    insert into sys_organization (org_id, org_pid, org_name, 
+      org_desc, country, province, 
+      city, district, addr, 
+      fax, postcode, inner_tel, 
+      outer_tel, charge, assistant, 
+      org_type, org_level, org_logo, 
+      sort, ct_user_id, ct_time, 
+      up_user_id, up_time, allow_edit, 
+      allow_del, note, del
+      )
+    values (#{orgId,jdbcType=VARCHAR}, #{orgPid,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, 
+      #{orgDesc,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{innerTel,jdbcType=VARCHAR}, 
+      #{outerTel,jdbcType=VARCHAR}, #{charge,jdbcType=VARCHAR}, #{assistant,jdbcType=VARCHAR}, 
+      #{orgType,jdbcType=VARCHAR}, #{orgLevel,jdbcType=VARCHAR}, #{orgLogo,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=VARCHAR}, #{ctUserId,jdbcType=VARCHAR}, #{ctTime,jdbcType=TIMESTAMP}, 
+      #{upUserId,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, #{allowEdit,jdbcType=DECIMAL}, 
+      #{allowDel,jdbcType=DECIMAL}, #{note,jdbcType=VARCHAR}, #{del,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.smertbox.security.organization.model.SysOrganization" >
+    insert into sys_organization
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="orgPid != null" >
+        org_pid,
+      </if>
+      <if test="orgName != null" >
+        org_name,
+      </if>
+      <if test="orgDesc != null" >
+        org_desc,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="addr != null" >
+        addr,
+      </if>
+      <if test="fax != null" >
+        fax,
+      </if>
+      <if test="postcode != null" >
+        postcode,
+      </if>
+      <if test="innerTel != null" >
+        inner_tel,
+      </if>
+      <if test="outerTel != null" >
+        outer_tel,
+      </if>
+      <if test="charge != null" >
+        charge,
+      </if>
+      <if test="assistant != null" >
+        assistant,
+      </if>
+      <if test="orgType != null" >
+        org_type,
+      </if>
+      <if test="orgLevel != null" >
+        org_level,
+      </if>
+      <if test="orgLogo != null" >
+        org_logo,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id,
+      </if>
+      <if test="ctTime != null" >
+        ct_time,
+      </if>
+      <if test="upUserId != null" >
+        up_user_id,
+      </if>
+      <if test="upTime != null" >
+        up_time,
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit,
+      </if>
+      <if test="allowDel != null" >
+        allow_del,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="del != null" >
+        del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgPid != null" >
+        #{orgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgDesc != null" >
+        #{orgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null" >
+        #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="innerTel != null" >
+        #{innerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="outerTel != null" >
+        #{outerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="charge != null" >
+        #{charge,jdbcType=VARCHAR},
+      </if>
+      <if test="assistant != null" >
+        #{assistant,jdbcType=VARCHAR},
+      </if>
+      <if test="orgType != null" >
+        #{orgType,jdbcType=VARCHAR},
+      </if>
+      <if test="orgLevel != null" >
+        #{orgLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="orgLogo != null" >
+        #{orgLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="ctUserId != null" >
+        #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctTime != null" >
+        #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allowEdit != null" >
+        #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        #{del,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smertbox.security.organization.model.SysOrganizationExample" resultType="java.lang.Integer" >
+    select count(*) from sys_organization
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_organization
+    <set >
+      <if test="record.orgId != null" >
+        org_id = #{record.orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgPid != null" >
+        org_pid = #{record.orgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgName != null" >
+        org_name = #{record.orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgDesc != null" >
+        org_desc = #{record.orgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.country != null" >
+        country = #{record.country,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addr != null" >
+        addr = #{record.addr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fax != null" >
+        fax = #{record.fax,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postcode != null" >
+        postcode = #{record.postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.innerTel != null" >
+        inner_tel = #{record.innerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outerTel != null" >
+        outer_tel = #{record.outerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.charge != null" >
+        charge = #{record.charge,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assistant != null" >
+        assistant = #{record.assistant,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgType != null" >
+        org_type = #{record.orgType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgLevel != null" >
+        org_level = #{record.orgLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgLogo != null" >
+        org_logo = #{record.orgLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctUserId != null" >
+        ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctTime != null" >
+        ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.upUserId != null" >
+        up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.upTime != null" >
+        up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.allowEdit != null" >
+        allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.allowDel != null" >
+        allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.del != null" >
+        del = #{record.del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_organization
+    set org_id = #{record.orgId,jdbcType=VARCHAR},
+      org_pid = #{record.orgPid,jdbcType=VARCHAR},
+      org_name = #{record.orgName,jdbcType=VARCHAR},
+      org_desc = #{record.orgDesc,jdbcType=VARCHAR},
+      country = #{record.country,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      addr = #{record.addr,jdbcType=VARCHAR},
+      fax = #{record.fax,jdbcType=VARCHAR},
+      postcode = #{record.postcode,jdbcType=VARCHAR},
+      inner_tel = #{record.innerTel,jdbcType=VARCHAR},
+      outer_tel = #{record.outerTel,jdbcType=VARCHAR},
+      charge = #{record.charge,jdbcType=VARCHAR},
+      assistant = #{record.assistant,jdbcType=VARCHAR},
+      org_type = #{record.orgType,jdbcType=VARCHAR},
+      org_level = #{record.orgLevel,jdbcType=VARCHAR},
+      org_logo = #{record.orgLogo,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=VARCHAR},
+      ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      note = #{record.note,jdbcType=VARCHAR},
+      del = #{record.del,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smertbox.security.organization.model.SysOrganization" >
+    update sys_organization
+    <set >
+      <if test="orgPid != null" >
+        org_pid = #{orgPid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgDesc != null" >
+        org_desc = #{orgDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null" >
+        postcode = #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="innerTel != null" >
+        inner_tel = #{innerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="outerTel != null" >
+        outer_tel = #{outerTel,jdbcType=VARCHAR},
+      </if>
+      <if test="charge != null" >
+        charge = #{charge,jdbcType=VARCHAR},
+      </if>
+      <if test="assistant != null" >
+        assistant = #{assistant,jdbcType=VARCHAR},
+      </if>
+      <if test="orgType != null" >
+        org_type = #{orgType,jdbcType=VARCHAR},
+      </if>
+      <if test="orgLevel != null" >
+        org_level = #{orgLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="orgLogo != null" >
+        org_logo = #{orgLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctTime != null" >
+        ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        up_user_id = #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        up_time = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        allow_del = #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        del = #{del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smertbox.security.organization.model.SysOrganization" >
+    update sys_organization
+    set org_pid = #{orgPid,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      org_desc = #{orgDesc,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      addr = #{addr,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      postcode = #{postcode,jdbcType=VARCHAR},
+      inner_tel = #{innerTel,jdbcType=VARCHAR},
+      outer_tel = #{outerTel,jdbcType=VARCHAR},
+      charge = #{charge,jdbcType=VARCHAR},
+      assistant = #{assistant,jdbcType=VARCHAR},
+      org_type = #{orgType,jdbcType=VARCHAR},
+      org_level = #{orgLevel,jdbcType=VARCHAR},
+      org_logo = #{orgLogo,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=VARCHAR},
+      ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      up_user_id = #{upUserId,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      allow_del = #{allowDel,jdbcType=DECIMAL},
+      note = #{note,jdbcType=VARCHAR},
+      del = #{del,jdbcType=DECIMAL}
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from sys_organization where del = 0
+  </select>
+  
+  <select id="selectPage" parameterType="com.smertbox.security.organization.model.SysOrganization" resultMap="BaseResultMap" >
+    select * from sys_organization
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectPageSize" parameterType="com.smertbox.security.organization.model.SysOrganization" resultType="java.lang.Integer" >
+    select count(*) from sys_organization
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+  </select>
+  
+  <select id="selectOrganizationTree" parameterType="java.lang.String" resultType="com.smertbox.util.tree.model.TreeNode">
+  SELECT org_id as id,org_pid as pId,org_name as name FROM sys_organization s WHERE s.org_id in (SELECT o.org_id FROM sys_user u LEFT JOIN sys_user_org o ON o.user_id=u.user_id WHERE u.login_account=#{loginAccount,jdbcType=VARCHAR}) and del=0
+  </select>
+  
+  <select id="selectAdminOrganizationTree" parameterType="java.lang.String" resultType="com.smertbox.util.tree.model.TreeNode">
+  SELECT org_id as id,org_pid as pId,org_name as name FROM sys_organization WHERE del=0
+  </select>
+  
+</mapper>

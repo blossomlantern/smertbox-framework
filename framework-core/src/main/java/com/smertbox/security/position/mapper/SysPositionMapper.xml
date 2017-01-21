@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smertbox.security.position.mapper.SysPositionMapper" >
+  <resultMap id="BaseResultMap" type="com.smertbox.security.position.model.SysPosition" >
+    <id column="position_id" property="positionId" jdbcType="VARCHAR" />
+    <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+    <result column="position_desc" property="positionDesc" jdbcType="VARCHAR" />
+    <result column="position_type" property="positionType" jdbcType="VARCHAR" />
+    <result column="position_level" property="positionLevel" jdbcType="VARCHAR" />
+    <result column="islimit" property="islimit" jdbcType="DECIMAL" />
+    <result column="ct_time" property="ctTime" jdbcType="TIMESTAMP" />
+    <result column="ct_user_id" property="ctUserId" jdbcType="VARCHAR" />
+    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="up_user_id" property="upUserId" jdbcType="VARCHAR" />
+    <result column="allow_edit" property="allowEdit" jdbcType="DECIMAL" />
+    <result column="allow_del" property="allowDel" jdbcType="DECIMAL" />
+    <result column="del" property="del" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <sql id="Page_Where_Clause" >
+  	  <if test="positionName != null and positionName != ''" >
+        and position_name like '%${positionName}%'
+      </if>
+      <if test="positionDesc != null and positionDesc != ''" >
+        and position_desc = #{positionDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="positionType != null and positionType != ''" >
+        and position_type = #{positionType,jdbcType=VARCHAR}
+      </if>
+      <if test="positionLevel != null and positionLevel != ''" >
+        and position_level = #{positionLevel,jdbcType=VARCHAR}
+      </if>
+      <if test="islimit != null and islimit != ''" >
+        and islimit = #{islimit,jdbcType=DECIMAL}
+      </if>
+      <if test="beginCtTime != null and beginCtTime != '' and endCtTime != null and endCtTime != ''" >
+        and ct_time between #{beginCtTime,jdbcType=TIMESTAMP} and #{endCtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="ctTime != null and ctTime != ''" >
+        and ct_time = #{ctTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="ctUserId != null and ctUserId != ''" >
+        and ct_user_id = #{ctUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="upTime != null and upTime != ''" >
+        and up_time = #{upTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="upUserId != null and upUserId != ''" >
+        and up_user_id = #{upUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="allowEdit != null and allowEdit != ''" >
+        and allow_edit = #{allowEdit,jdbcType=DECIMAL}
+      </if>
+      <if test="allowDel != null and allowDel != ''" >
+        and allow_del = #{allowDel,jdbcType=DECIMAL}
+      </if>
+        and del = 0
+  </sql>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    position_id, position_name, position_desc, position_type, position_level, islimit, 
+    ct_time, ct_user_id, up_time, up_user_id, allow_edit, allow_del, del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smertbox.security.position.model.SysPositionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_position
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_position
+    where position_id = #{positionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_position
+    where position_id = #{positionId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smertbox.security.position.model.SysPositionExample" >
+    delete from sys_position
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smertbox.security.position.model.SysPosition" >
+    insert into sys_position (position_id, position_name, position_desc, 
+      position_type, position_level, islimit, 
+      ct_time, ct_user_id, up_time, 
+      up_user_id, allow_edit, allow_del, 
+      del)
+    values (#{positionId,jdbcType=VARCHAR}, #{positionName,jdbcType=VARCHAR}, #{positionDesc,jdbcType=VARCHAR}, 
+      #{positionType,jdbcType=VARCHAR}, #{positionLevel,jdbcType=VARCHAR}, #{islimit,jdbcType=DECIMAL}, 
+      #{ctTime,jdbcType=TIMESTAMP}, #{ctUserId,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, 
+      #{upUserId,jdbcType=VARCHAR}, #{allowEdit,jdbcType=DECIMAL}, #{allowDel,jdbcType=DECIMAL}, 
+      #{del,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smertbox.security.position.model.SysPosition" >
+    insert into sys_position
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="positionId != null" >
+        position_id,
+      </if>
+      <if test="positionName != null" >
+        position_name,
+      </if>
+      <if test="positionDesc != null" >
+        position_desc,
+      </if>
+      <if test="positionType != null" >
+        position_type,
+      </if>
+      <if test="positionLevel != null" >
+        position_level,
+      </if>
+      <if test="islimit != null" >
+        islimit,
+      </if>
+      <if test="ctTime != null" >
+        ct_time,
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id,
+      </if>
+      <if test="upTime != null" >
+        up_time,
+      </if>
+      <if test="upUserId != null" >
+        up_user_id,
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit,
+      </if>
+      <if test="allowDel != null" >
+        allow_del,
+      </if>
+      <if test="del != null" >
+        del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionName != null" >
+        #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="positionDesc != null" >
+        #{positionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="positionType != null" >
+        #{positionType,jdbcType=VARCHAR},
+      </if>
+      <if test="positionLevel != null" >
+        #{positionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="islimit != null" >
+        #{islimit,jdbcType=DECIMAL},
+      </if>
+      <if test="ctTime != null" >
+        #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ctUserId != null" >
+        #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="del != null" >
+        #{del,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smertbox.security.position.model.SysPositionExample" resultType="java.lang.Integer" >
+    select count(*) from sys_position
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_position
+    <set >
+      <if test="record.positionId != null" >
+        position_id = #{record.positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionName != null" >
+        position_name = #{record.positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionDesc != null" >
+        position_desc = #{record.positionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionType != null" >
+        position_type = #{record.positionType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionLevel != null" >
+        position_level = #{record.positionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.islimit != null" >
+        islimit = #{record.islimit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ctTime != null" >
+        ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ctUserId != null" >
+        ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.upTime != null" >
+        up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.upUserId != null" >
+        up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allowEdit != null" >
+        allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.allowDel != null" >
+        allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.del != null" >
+        del = #{record.del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_position
+    set position_id = #{record.positionId,jdbcType=VARCHAR},
+      position_name = #{record.positionName,jdbcType=VARCHAR},
+      position_desc = #{record.positionDesc,jdbcType=VARCHAR},
+      position_type = #{record.positionType,jdbcType=VARCHAR},
+      position_level = #{record.positionLevel,jdbcType=VARCHAR},
+      islimit = #{record.islimit,jdbcType=DECIMAL},
+      ct_time = #{record.ctTime,jdbcType=TIMESTAMP},
+      ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      del = #{record.del,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smertbox.security.position.model.SysPosition" >
+    update sys_position
+    <set >
+      <if test="positionName != null" >
+        position_name = #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="positionDesc != null" >
+        position_desc = #{positionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="positionType != null" >
+        position_type = #{positionType,jdbcType=VARCHAR},
+      </if>
+      <if test="positionLevel != null" >
+        position_level = #{positionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="islimit != null" >
+        islimit = #{islimit,jdbcType=DECIMAL},
+      </if>
+      <if test="ctTime != null" >
+        ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        up_time = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        up_user_id = #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        allow_del = #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="del != null" >
+        del = #{del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where position_id = #{positionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smertbox.security.position.model.SysPosition" >
+    update sys_position
+    set position_name = #{positionName,jdbcType=VARCHAR},
+      position_desc = #{positionDesc,jdbcType=VARCHAR},
+      position_type = #{positionType,jdbcType=VARCHAR},
+      position_level = #{positionLevel,jdbcType=VARCHAR},
+      islimit = #{islimit,jdbcType=DECIMAL},
+      ct_time = #{ctTime,jdbcType=TIMESTAMP},
+      ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      up_user_id = #{upUserId,jdbcType=VARCHAR},
+      allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      allow_del = #{allowDel,jdbcType=DECIMAL},
+      del = #{del,jdbcType=DECIMAL}
+    where position_id = #{positionId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from sys_position where del = 0
+  </select>
+  
+  <select id="selectPage" parameterType="com.smertbox.security.position.model.SysPosition" resultMap="BaseResultMap" >
+    select * from sys_position
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectPageSize" parameterType="com.smertbox.security.position.model.SysPosition" resultType="java.lang.Integer" >
+    select count(*) from sys_position
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+  </select>
+  
+  <select id="selectAllHaveParam" resultMap="BaseResultMap" >
+  	SELECT 
+	s.*,
+	p1.par_value AS positionTypeValue,
+	p2.par_value AS positionLevelValue
+	FROM sys_position s 
+	LEFT JOIN cm_parameter p1 ON s.position_type=p1.par_key 
+	LEFT JOIN cm_parameter p2 ON s.position_level=p2.par_key 
+	where s.del = 0
+	ORDER BY position_name
+  </select>
+  
+  <select id="selectAllPositionType" resultType="java.lang.String">
+  	SELECT 
+	position_type
+	FROM sys_position s 
+	GROUP BY s.position_type 
+  </select>
+  
+  <select id="selectPageByUserId" parameterType="java.lang.String" resultMap="BaseResultMap" >
+  	 SELECT 
+	  * 
+	FROM
+	  sys_position sp 
+	WHERE sp.position_id IN 
+	  (SELECT 
+	    p.position_id 
+	  FROM
+	    sys_org_position p 
+	  WHERE p.org_id IN 
+	    (SELECT 
+	      s.org_id 
+	    FROM
+	      sys_user_org s 
+	    WHERE s.user_id = #{userId,jdbcType=VARCHAR})) 
+	ORDER BY sp.position_name 
+  </select>
+  
+  <select id="selectByLoginAccount" parameterType="java.lang.String" resultMap="BaseResultMap" >
+  	 SELECT 
+	  * 
+	FROM
+	  sys_position t 
+	WHERE t.position_id IN 
+	  (SELECT 
+	    l.position_id 
+	  FROM
+	    sys_user_position l 
+	    LEFT JOIN sys_user r 
+	      ON l.user_id = r.user_id 
+	      WHERE r.login_account = #{loginAccount,jdbcType=VARCHAR})
+  </select>
+  
+</mapper>

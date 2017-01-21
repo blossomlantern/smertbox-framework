@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smertbox.security.user.mapper.SysUserMapper" >
+  <resultMap id="BaseResultMap" type="com.smertbox.security.user.model.SysUser" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="org_sid" property="orgSid" jdbcType="VARCHAR" />
+    <result column="login_account" property="loginAccount" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="passwd" property="passwd" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="DECIMAL" />
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
+    <result column="office" property="office" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="login_count" property="loginCount" jdbcType="DECIMAL" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="ct_user_id" property="ctUserId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="up_user_id" property="upUserId" jdbcType="VARCHAR" />
+    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="que_answer" property="queAnswer" jdbcType="VARCHAR" />
+    <result column="enable_position" property="enablePosition" jdbcType="DECIMAL" />
+    <result column="role_enable_type" property="roleEnableType" jdbcType="DECIMAL" />
+    <result column="question" property="question" jdbcType="VARCHAR" />
+    <result column="ismanage" property="ismanage" jdbcType="DECIMAL" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="allow_edit" property="allowEdit" jdbcType="DECIMAL" />
+    <result column="allow_del" property="allowDel" jdbcType="DECIMAL" />
+    <result column="del" property="del" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <sql id="Page_Where_Clause">
+      <if test="orgSid != null and orgSid != ''" >
+       and org_sid = #{orgSid,jdbcType=VARCHAR}
+      </if>
+      <if test="loginAccount != null and loginAccount != ''" >
+       and login_account like '%${loginAccount}%'
+      </if>
+      <if test="username != null and username != ''" >
+       and username like '%${username}%'
+      </if>
+      <if test="passwd != null and passwd != ''" >
+       and passwd = #{passwd,jdbcType=VARCHAR}
+      </if>
+      <if test="sex != null and sex != ''" >
+       and sex = #{sex,jdbcType=DECIMAL}
+      </if>
+      <if test="theme != null and theme != ''" >
+       and theme = #{theme,jdbcType=VARCHAR}
+      </if>
+      <if test="office != null and office != ''" >
+       and office = #{office,jdbcType=VARCHAR}
+      </if>
+      <if test="officename != null and officename != ''" >
+       and officename like '%${officename}%'
+      </if>
+      <if test="orgname != null and orgname != ''" >
+       and orgname like '%${orgname}%'
+      </if>
+      <if test="tel != null and tel != ''" >
+       and tel = #{tel,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null and email != ''" >
+       and email = #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="loginCount != null and loginCount != ''" >
+       and login_count = #{loginCount,jdbcType=DECIMAL}
+      </if>
+      <if test="photo != null and photo != ''" >
+       and photo = #{photo,jdbcType=VARCHAR}
+      </if>
+      <if test="birthday != null and birthday != ''" >
+       and birthday = #{birthday,jdbcType=DATE}
+      </if>
+      <if test="ctUserId != null and ctUserId != ''" >
+       and ct_user_id = #{ctUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="beginCtTime != null and beginCtTime != '' and endCtTime != null and endCtTime != ''" >
+        and create_time between #{beginCtTime,jdbcType=TIMESTAMP} and #{endCtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null and createTime != ''" >
+       and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="upUserId != null and upUserId != ''" >
+       and up_user_id = #{upUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="upTime != null and upTime != ''" >
+       and up_time = #{upTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="loginTime != null and loginTime != ''" >
+       and login_time = #{loginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastLoginTime != null and lastLoginTime != ''" >
+       and last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="queAnswer != null and queAnswer != ''" >
+       and que_answer = #{queAnswer,jdbcType=VARCHAR}
+      </if>
+      <if test="enablePosition != null and enablePosition != ''" >
+       and enable_position = #{enablePosition,jdbcType=DECIMAL}
+      </if>
+      <if test="roleEnableType != null and roleEnableType != ''" >
+       and role_enable_type = #{roleEnableType,jdbcType=DECIMAL}
+      </if>
+      <if test="question != null and question != ''" >
+       and question = #{question,jdbcType=VARCHAR}
+      </if>
+      <if test="note != null and note != ''" >
+       and note = #{note,jdbcType=VARCHAR}
+      </if>
+      <if test="allowEdit != null and allowEdit != ''" >
+       and allow_edit = #{allowEdit,jdbcType=DECIMAL}
+      </if>
+      <if test="allowDel != null and allowEdit != ''" >
+       and allow_del = #{allowDel,jdbcType=DECIMAL}
+      </if>
+       and del = 0
+  </sql>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, org_sid, login_account, username, passwd, sex, theme, office, tel, email, 
+    login_count, photo, birthday, ct_user_id, create_time, up_user_id, up_time, login_time, 
+    last_login_time, que_answer, enable_position, role_enable_type, question, ismanage, 
+    note, allow_edit, allow_del, del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smertbox.security.user.model.SysUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smertbox.security.user.model.SysUserExample" >
+    delete from sys_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smertbox.security.user.model.SysUser" >
+    insert into sys_user (user_id, org_sid, login_account, 
+      username, passwd, sex, 
+      theme, office, tel, 
+      email, login_count, photo, 
+      birthday, ct_user_id, create_time, 
+      up_user_id, up_time, login_time, 
+      last_login_time, que_answer, enable_position, 
+      role_enable_type, question, ismanage, 
+      note, allow_edit, allow_del, 
+      del)
+    values (#{userId,jdbcType=VARCHAR}, #{orgSid,jdbcType=VARCHAR}, #{loginAccount,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR}, #{sex,jdbcType=DECIMAL}, 
+      #{theme,jdbcType=VARCHAR}, #{office,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{loginCount,jdbcType=DECIMAL}, #{photo,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=DATE}, #{ctUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{upUserId,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, #{loginTime,jdbcType=TIMESTAMP}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{queAnswer,jdbcType=VARCHAR}, #{enablePosition,jdbcType=DECIMAL}, 
+      #{roleEnableType,jdbcType=DECIMAL}, #{question,jdbcType=VARCHAR}, #{ismanage,jdbcType=DECIMAL}, 
+      #{note,jdbcType=VARCHAR}, #{allowEdit,jdbcType=DECIMAL}, #{allowDel,jdbcType=DECIMAL}, 
+      #{del,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smertbox.security.user.model.SysUser" >
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="orgSid != null" >
+        org_sid,
+      </if>
+      <if test="loginAccount != null" >
+        login_account,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="passwd != null" >
+        passwd,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="theme != null" >
+        theme,
+      </if>
+      <if test="office != null" >
+        office,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="loginCount != null" >
+        login_count,
+      </if>
+      <if test="photo != null" >
+        photo,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="upUserId != null" >
+        up_user_id,
+      </if>
+      <if test="upTime != null" >
+        up_time,
+      </if>
+      <if test="loginTime != null" >
+        login_time,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="queAnswer != null" >
+        que_answer,
+      </if>
+      <if test="enablePosition != null" >
+        enable_position,
+      </if>
+      <if test="roleEnableType != null" >
+        role_enable_type,
+      </if>
+      <if test="question != null" >
+        question,
+      </if>
+      <if test="ismanage != null" >
+        ismanage,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit,
+      </if>
+      <if test="allowDel != null" >
+        allow_del,
+      </if>
+      <if test="del != null" >
+        del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgSid != null" >
+        #{orgSid,jdbcType=VARCHAR},
+      </if>
+      <if test="loginAccount != null" >
+        #{loginAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null" >
+        #{passwd,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=DECIMAL},
+      </if>
+      <if test="theme != null" >
+        #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="office != null" >
+        #{office,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCount != null" >
+        #{loginCount,jdbcType=DECIMAL},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="ctUserId != null" >
+        #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="queAnswer != null" >
+        #{queAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="enablePosition != null" >
+        #{enablePosition,jdbcType=DECIMAL},
+      </if>
+      <if test="roleEnableType != null" >
+        #{roleEnableType,jdbcType=DECIMAL},
+      </if>
+      <if test="question != null" >
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="ismanage != null" >
+        #{ismanage,jdbcType=DECIMAL},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="del != null" >
+        #{del,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smertbox.security.user.model.SysUserExample" resultType="java.lang.Integer" >
+    select count(*) from sys_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_user
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgSid != null" >
+        org_sid = #{record.orgSid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginAccount != null" >
+        login_account = #{record.loginAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passwd != null" >
+        passwd = #{record.passwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=DECIMAL},
+      </if>
+      <if test="record.theme != null" >
+        theme = #{record.theme,jdbcType=VARCHAR},
+      </if>
+      <if test="record.office != null" >
+        office = #{record.office,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null" >
+        tel = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginCount != null" >
+        login_count = #{record.loginCount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.photo != null" >
+        photo = #{record.photo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.ctUserId != null" >
+        ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.upUserId != null" >
+        up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.upTime != null" >
+        up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.loginTime != null" >
+        login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLoginTime != null" >
+        last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.queAnswer != null" >
+        que_answer = #{record.queAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enablePosition != null" >
+        enable_position = #{record.enablePosition,jdbcType=DECIMAL},
+      </if>
+      <if test="record.roleEnableType != null" >
+        role_enable_type = #{record.roleEnableType,jdbcType=DECIMAL},
+      </if>
+      <if test="record.question != null" >
+        question = #{record.question,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ismanage != null" >
+        ismanage = #{record.ismanage,jdbcType=DECIMAL},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allowEdit != null" >
+        allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.allowDel != null" >
+        allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.del != null" >
+        del = #{record.del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_user
+    set user_id = #{record.userId,jdbcType=VARCHAR},
+      org_sid = #{record.orgSid,jdbcType=VARCHAR},
+      login_account = #{record.loginAccount,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
+      passwd = #{record.passwd,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=DECIMAL},
+      theme = #{record.theme,jdbcType=VARCHAR},
+      office = #{record.office,jdbcType=VARCHAR},
+      tel = #{record.tel,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      login_count = #{record.loginCount,jdbcType=DECIMAL},
+      photo = #{record.photo,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      que_answer = #{record.queAnswer,jdbcType=VARCHAR},
+      enable_position = #{record.enablePosition,jdbcType=DECIMAL},
+      role_enable_type = #{record.roleEnableType,jdbcType=DECIMAL},
+      question = #{record.question,jdbcType=VARCHAR},
+      ismanage = #{record.ismanage,jdbcType=DECIMAL},
+      note = #{record.note,jdbcType=VARCHAR},
+      allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      del = #{record.del,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smertbox.security.user.model.SysUser" >
+    update sys_user
+    <set >
+      <if test="orgSid != null" >
+        org_sid = #{orgSid,jdbcType=VARCHAR},
+      </if>
+      <if test="loginAccount != null" >
+        login_account = #{loginAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null" >
+        passwd = #{passwd,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=DECIMAL},
+      </if>
+      <if test="theme != null" >
+        theme = #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="office != null" >
+        office = #{office,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCount != null" >
+        login_count = #{loginCount,jdbcType=DECIMAL},
+      </if>
+      <if test="photo != null" >
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upUserId != null" >
+        up_user_id = #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        up_time = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null" >
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="queAnswer != null" >
+        que_answer = #{queAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="enablePosition != null" >
+        enable_position = #{enablePosition,jdbcType=DECIMAL},
+      </if>
+      <if test="roleEnableType != null" >
+        role_enable_type = #{roleEnableType,jdbcType=DECIMAL},
+      </if>
+      <if test="question != null" >
+        question = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="ismanage != null" >
+        ismanage = #{ismanage,jdbcType=DECIMAL},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="allowDel != null" >
+        allow_del = #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="del != null" >
+        del = #{del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smertbox.security.user.model.SysUser" >
+    update sys_user
+    set org_sid = #{orgSid,jdbcType=VARCHAR},
+      login_account = #{loginAccount,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      passwd = #{passwd,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=DECIMAL},
+      theme = #{theme,jdbcType=VARCHAR},
+      office = #{office,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      login_count = #{loginCount,jdbcType=DECIMAL},
+      photo = #{photo,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      up_user_id = #{upUserId,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      que_answer = #{queAnswer,jdbcType=VARCHAR},
+      enable_position = #{enablePosition,jdbcType=DECIMAL},
+      role_enable_type = #{roleEnableType,jdbcType=DECIMAL},
+      question = #{question,jdbcType=VARCHAR},
+      ismanage = #{ismanage,jdbcType=DECIMAL},
+      note = #{note,jdbcType=VARCHAR},
+      allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      allow_del = #{allowDel,jdbcType=DECIMAL},
+      del = #{del,jdbcType=DECIMAL}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByLoginAccount" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from sys_user where login_account = #{loginAccount,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select * from sys_user where del = 0
+  </select>
+  
+  <select id="selectPage" parameterType="com.smertbox.security.user.model.SysUser" resultMap="BaseResultMap" >
+  	SELECT 
+	  o.* 
+	FROM
+	  (SELECT 
+	    s.*,
+	    (SELECT 
+	      GROUP_CONCAT(o.org_name) 
+	    FROM
+	      sys_organization o 
+	    WHERE o.org_id IN 
+	      (SELECT 
+	        i.org_id 
+	      FROM
+	        sys_user_org i 
+	        LEFT JOIN sys_user u 
+	          ON u.user_id = i.user_id 
+	      WHERE u.login_account = s.login_account)) AS orgname,
+	    (SELECT 
+	      GROUP_CONCAT(o.position_name) 
+	    FROM
+	      sys_position o 
+	    WHERE o.position_id IN 
+	      (SELECT 
+	        i.position_id 
+	      FROM
+	        sys_user_position i 
+	        LEFT JOIN sys_user u 
+	          ON u.user_id = i.user_id 
+	      WHERE u.login_account = s.login_account)) AS officename 
+	  FROM
+	  <choose>
+        <when test="nowLoginAccount == null || nowLoginAccount == ''">
+            sys_user s
+        </when>
+        <otherwise>
+            (SELECT 
+		      i.* 
+		    FROM
+		      sys_user i
+		    WHERE user_id IN 
+		      (SELECT 
+		        DISTINCT u.user_id 
+		      FROM
+		        sys_user u 
+		        LEFT JOIN sys_user_org o 
+		          ON o.user_id = u.user_id 
+		      WHERE o.org_id IN 
+		        (SELECT DISTINCT 
+		          o.org_id 
+		        FROM
+		          sys_user u 
+		          LEFT JOIN sys_user_org o 
+		            ON u.user_id = o.user_id 
+		        WHERE u.login_account = #{nowLoginAccount,jdbcType=VARCHAR}))) s
+        </otherwise>
+      </choose>
+	  ) o  
+	WHERE 1 = 1 
+    <include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectPageSize" parameterType="com.smertbox.security.user.model.SysUser" resultType="java.lang.Integer" >
+    SELECT 
+	  count(*) 
+	FROM
+	  (SELECT 
+	    s.*,
+	    (SELECT 
+	      GROUP_CONCAT(o.org_name) 
+	    FROM
+	      sys_organization o 
+	    WHERE o.org_id IN 
+	      (SELECT 
+	        i.org_id 
+	      FROM
+	        sys_user_org i 
+	        LEFT JOIN sys_user u 
+	          ON u.user_id = i.user_id 
+	      WHERE u.login_account = s.login_account)) AS orgname,
+	    (SELECT 
+	      GROUP_CONCAT(o.position_name) 
+	    FROM
+	      sys_position o 
+	    WHERE o.position_id IN 
+	      (SELECT 
+	        i.position_id 
+	      FROM
+	        sys_user_position i 
+	        LEFT JOIN sys_user u 
+	          ON u.user_id = i.user_id 
+	      WHERE u.login_account = s.login_account)) AS officename 
+	  FROM
+	  <choose>
+        <when test="nowLoginAccount == null || nowLoginAccount == ''">
+            sys_user s
+        </when>
+        <otherwise>
+            (SELECT 
+		      i.* 
+		    FROM
+		      sys_user i
+		    WHERE user_id IN 
+		      (SELECT 
+		        DISTINCT u.user_id 
+		      FROM
+		        sys_user u 
+		        LEFT JOIN sys_user_org o 
+		          ON o.user_id = u.user_id 
+		      WHERE o.org_id IN 
+		        (SELECT DISTINCT 
+		          o.org_id 
+		        FROM
+		          sys_user u 
+		          LEFT JOIN sys_user_org o 
+		            ON u.user_id = o.user_id 
+		        WHERE u.login_account = #{nowLoginAccount,jdbcType=VARCHAR}))) s
+        </otherwise>
+      </choose>
+	  ) o 
+	WHERE 1 = 1 
+    <include refid="Page_Where_Clause"/>
+  </select>
+  
+  <select id="selectAdminPage" parameterType="com.smertbox.security.user.model.SysUser" resultMap="BaseResultMap" >
+  	SELECT 
+	  o.* 
+	FROM
+	  (SELECT 
+	    s.*,
+	    (SELECT 
+	      GROUP_CONCAT(o.org_name) 
+	    FROM
+	      sys_organization o 
+	    WHERE o.org_id IN 
+	      (SELECT 
+	        i.org_id 
+	      FROM
+	        sys_user_org i 
+	        LEFT JOIN sys_user u 
+	          ON u.user_id = i.user_id 
+	      WHERE u.login_account = s.login_account)) AS orgname,
+	    (SELECT 
+	      GROUP_CONCAT(o.position_name) 
+	    FROM
+	      sys_position o 
+	    WHERE o.position_id IN 
+	      (SELECT 
+	        i.position_id 
+	      FROM
+	        sys_user_position i 
+	        LEFT JOIN sys_user u 
+	          ON u.user_id = i.user_id 
+	      WHERE u.login_account = s.login_account)) AS officename 
+	  FROM
+      sys_user s
+	  ) o  
+	WHERE 1 = 1 
+    <include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectAdminPageSize" parameterType="com.smertbox.security.user.model.SysUser" resultType="java.lang.Integer" >
+    SELECT 
+	  count(*) 
+	FROM
+	  (SELECT 
+	    s.*,
+	    (SELECT 
+	      GROUP_CONCAT(o.org_name) 
+	    FROM
+	      sys_organization o 
+	    WHERE o.org_id IN 
+	      (SELECT 
+	        i.org_id 
+	      FROM
+	        sys_user_org i 
+	        LEFT JOIN sys_user u 
+	          ON u.user_id = i.user_id 
+	      WHERE u.login_account = s.login_account)) AS orgname,
+	    (SELECT 
+	      GROUP_CONCAT(o.position_name) 
+	    FROM
+	      sys_position o 
+	    WHERE o.position_id IN 
+	      (SELECT 
+	        i.position_id 
+	      FROM
+	        sys_user_position i 
+	        LEFT JOIN sys_user u 
+	          ON u.user_id = i.user_id 
+	      WHERE u.login_account = s.login_account)) AS officename 
+	  FROM
+      sys_user s
+	  ) o 
+	WHERE 1 = 1 
+    <include refid="Page_Where_Clause"/>
+  </select>
+  
+  <select id="selectManageUser" resultMap="BaseResultMap">
+  SELECT * FROM sys_user t WHERE t.ismanage = 1 and del = 0
+  </select>
+  
+</mapper>

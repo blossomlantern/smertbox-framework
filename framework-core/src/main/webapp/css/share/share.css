@@ -1,0 +1,60 @@
+.zc-share span {
+	color: #8c8c8c;
+	vertical-align: middle;
+	font-size: 14px;
+	line-height: 28px;
+}
+.zc-share {
+	/*position: absolute;
+	bottom: 14px;*/
+}
+.shareText {
+	padding-right: 8px;
+}
+.s-shareIcon {
+	display: inline-block;
+	width: 29px;
+	height: 28px;
+	background: url(img/detailsIcon-0531_01.png) no-repeat;
+	cursor: pointer;
+	margin:5px;
+}
+.wx {
+	position: relative;
+	background-position: 0 0;
+}
+#wxQrcode {
+	position: absolute;
+	top: -138px;
+	left: -48px;
+	display: none;
+	width: 122px;
+	height: 132px;
+	/*background: url(css/share/img/icon_t03192041.png) no-repeat 0 -120px;*/
+	z-index: 100;
+}
+#wxQrcode img {
+	padding: 1px;
+	width: 120px;
+}
+.wx:hover {
+	background-position: 0 -35px;
+}
+.qq {
+	background-position: -67px 0;
+}
+.qq:hover {
+	background-position: -66px -35px;
+}
+.qzone {
+	background-position: -100px 0;
+}
+.qzone:hover {
+	background-position: -99px -35px;
+}
+.weibo {
+	background-position: -132px 0;
+}
+.weibo:hover {
+	background-position: -131px -35px;
+}

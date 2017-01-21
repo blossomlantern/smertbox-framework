@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smertbox.api.attachment.mapper.CmAttachmentMapper" >
+  <resultMap id="BaseResultMap" type="com.smertbox.api.attachment.model.CmAttachment" >
+    <id column="attachment_id" property="attachmentId" jdbcType="VARCHAR" />
+    <result column="original_name" property="originalName" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="prefix" property="prefix" jdbcType="VARCHAR" />
+    <result column="suffix" property="suffix" jdbcType="VARCHAR" />
+    <result column="physical_addr" property="physicalAddr" jdbcType="VARCHAR" />
+    <result column="relative_addr" property="relativeAddr" jdbcType="VARCHAR" />
+    <result column="access_addr" property="accessAddr" jdbcType="VARCHAR" />
+    <result column="pk_table" property="pkTable" jdbcType="VARCHAR" />
+    <result column="pk_id" property="pkId" jdbcType="VARCHAR" />
+    <result column="ct_user_id" property="ctUserId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="allow_del" property="allowDel" jdbcType="DECIMAL" />
+    <result column="allow_edit" property="allowEdit" jdbcType="DECIMAL" />
+    <result column="up_user_id" property="upUserId" jdbcType="VARCHAR" />
+    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="del" property="del" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <sql id="Page_Where_Clause">
+  	  <if test="originalName != null and originalName != ''" >
+       and original_name = #{originalName,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null and name != ''" >
+       and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="description != null and description != ''" >
+       and description = #{description,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null and type != ''" >
+       and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="prefix != null and prefix != ''" >
+       and prefix = #{prefix,jdbcType=VARCHAR}
+      </if>
+      <if test="suffix != null and suffix != ''" >
+       and suffix = #{suffix,jdbcType=VARCHAR}
+      </if>
+      <if test="physicalAddr != null and physicalAddr != ''" >
+       and physical_addr = #{physicalAddr,jdbcType=VARCHAR}
+      </if>
+      <if test="relativeAddr != null and relativeAddr != ''" >
+       and relative_addr = #{relativeAddr,jdbcType=VARCHAR}
+      </if>
+      <if test="accessAddr != null and accessAddr != ''" >
+       and access_addr = #{accessAddr,jdbcType=VARCHAR}
+      </if>
+      <if test="pkTable != null and pkTable != ''" >
+       and pk_table = #{pkTable,jdbcType=VARCHAR}
+      </if>
+      <if test="pkId != null and pkId != ''" >
+       and pk_id = #{pkId,jdbcType=VARCHAR}
+      </if>
+      <if test="ctUserId != null and ctUserId != ''" >
+       and ct_user_id = #{ctUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="beginCtTime != null and beginCtTime != '' and endCtTime != null and endCtTime != ''" >
+        and create_time between #{beginCtTime,jdbcType=TIMESTAMP} and #{endCtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="allowDel != null and allowDel != ''" >
+       and allow_del = #{allowDel,jdbcType=DECIMAL}
+      </if>
+      <if test="allowEdit != null and allowEdit != ''" >
+       and allow_edit = #{allowEdit,jdbcType=DECIMAL}
+      </if>
+      <if test="upUserId != null and upUserId != ''" >
+       and up_user_id = #{upUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="upTime != null and upTime != null" >
+       and up_time = #{upTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="note != null and note != ''" >
+       and note = #{note,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    attachment_id, original_name, name, description, type, prefix, suffix, physical_addr, 
+    relative_addr, access_addr, pk_table, pk_id, ct_user_id, create_time, allow_del, 
+    allow_edit, up_user_id, up_time, note, del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.smertbox.api.attachment.model.CmAttachmentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cm_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cm_attachment
+    where attachment_id = #{attachmentId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cm_attachment
+    where attachment_id = #{attachmentId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smertbox.api.attachment.model.CmAttachmentExample" >
+    delete from cm_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smertbox.api.attachment.model.CmAttachment" >
+    insert into cm_attachment (attachment_id, original_name, name, 
+      description, type, prefix, 
+      suffix, physical_addr, relative_addr, 
+      access_addr, pk_table, pk_id, 
+      ct_user_id, create_time, allow_del, 
+      allow_edit, up_user_id, up_time, 
+      note, del)
+    values (#{attachmentId,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{prefix,jdbcType=VARCHAR}, 
+      #{suffix,jdbcType=VARCHAR}, #{physicalAddr,jdbcType=VARCHAR}, #{relativeAddr,jdbcType=VARCHAR}, 
+      #{accessAddr,jdbcType=VARCHAR}, #{pkTable,jdbcType=VARCHAR}, #{pkId,jdbcType=VARCHAR}, 
+      #{ctUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{allowDel,jdbcType=DECIMAL}, 
+      #{allowEdit,jdbcType=DECIMAL}, #{upUserId,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, 
+      #{note,jdbcType=VARCHAR}, #{del,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smertbox.api.attachment.model.CmAttachment" >
+    insert into cm_attachment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="attachmentId != null" >
+        attachment_id,
+      </if>
+      <if test="originalName != null" >
+        original_name,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="prefix != null" >
+        prefix,
+      </if>
+      <if test="suffix != null" >
+        suffix,
+      </if>
+      <if test="physicalAddr != null" >
+        physical_addr,
+      </if>
+      <if test="relativeAddr != null" >
+        relative_addr,
+      </if>
+      <if test="accessAddr != null" >
+        access_addr,
+      </if>
+      <if test="pkTable != null" >
+        pk_table,
+      </if>
+      <if test="pkId != null" >
+        pk_id,
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="allowDel != null" >
+        allow_del,
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit,
+      </if>
+      <if test="upUserId != null" >
+        up_user_id,
+      </if>
+      <if test="upTime != null" >
+        up_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="del != null" >
+        del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="attachmentId != null" >
+        #{attachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="originalName != null" >
+        #{originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="prefix != null" >
+        #{prefix,jdbcType=VARCHAR},
+      </if>
+      <if test="suffix != null" >
+        #{suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="physicalAddr != null" >
+        #{physicalAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeAddr != null" >
+        #{relativeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="accessAddr != null" >
+        #{accessAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="pkTable != null" >
+        #{pkTable,jdbcType=VARCHAR},
+      </if>
+      <if test="pkId != null" >
+        #{pkId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctUserId != null" >
+        #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allowDel != null" >
+        #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="allowEdit != null" >
+        #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="upUserId != null" >
+        #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        #{del,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smertbox.api.attachment.model.CmAttachmentExample" resultType="java.lang.Integer" >
+    select count(*) from cm_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update cm_attachment
+    <set >
+      <if test="record.attachmentId != null" >
+        attachment_id = #{record.attachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.originalName != null" >
+        original_name = #{record.originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prefix != null" >
+        prefix = #{record.prefix,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suffix != null" >
+        suffix = #{record.suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="record.physicalAddr != null" >
+        physical_addr = #{record.physicalAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relativeAddr != null" >
+        relative_addr = #{record.relativeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessAddr != null" >
+        access_addr = #{record.accessAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkTable != null" >
+        pk_table = #{record.pkTable,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkId != null" >
+        pk_id = #{record.pkId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctUserId != null" >
+        ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.allowDel != null" >
+        allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.allowEdit != null" >
+        allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.upUserId != null" >
+        up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.upTime != null" >
+        up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.del != null" >
+        del = #{record.del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update cm_attachment
+    set attachment_id = #{record.attachmentId,jdbcType=VARCHAR},
+      original_name = #{record.originalName,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      prefix = #{record.prefix,jdbcType=VARCHAR},
+      suffix = #{record.suffix,jdbcType=VARCHAR},
+      physical_addr = #{record.physicalAddr,jdbcType=VARCHAR},
+      relative_addr = #{record.relativeAddr,jdbcType=VARCHAR},
+      access_addr = #{record.accessAddr,jdbcType=VARCHAR},
+      pk_table = #{record.pkTable,jdbcType=VARCHAR},
+      pk_id = #{record.pkId,jdbcType=VARCHAR},
+      ct_user_id = #{record.ctUserId,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      allow_del = #{record.allowDel,jdbcType=DECIMAL},
+      allow_edit = #{record.allowEdit,jdbcType=DECIMAL},
+      up_user_id = #{record.upUserId,jdbcType=VARCHAR},
+      up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR},
+      del = #{record.del,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smertbox.api.attachment.model.CmAttachment" >
+    update cm_attachment
+    <set >
+      <if test="originalName != null" >
+        original_name = #{originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="prefix != null" >
+        prefix = #{prefix,jdbcType=VARCHAR},
+      </if>
+      <if test="suffix != null" >
+        suffix = #{suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="physicalAddr != null" >
+        physical_addr = #{physicalAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeAddr != null" >
+        relative_addr = #{relativeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="accessAddr != null" >
+        access_addr = #{accessAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="pkTable != null" >
+        pk_table = #{pkTable,jdbcType=VARCHAR},
+      </if>
+      <if test="pkId != null" >
+        pk_id = #{pkId,jdbcType=VARCHAR},
+      </if>
+      <if test="ctUserId != null" >
+        ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allowDel != null" >
+        allow_del = #{allowDel,jdbcType=DECIMAL},
+      </if>
+      <if test="allowEdit != null" >
+        allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      </if>
+      <if test="upUserId != null" >
+        up_user_id = #{upUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        up_time = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null" >
+        del = #{del,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where attachment_id = #{attachmentId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smertbox.api.attachment.model.CmAttachment" >
+    update cm_attachment
+    set original_name = #{originalName,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      prefix = #{prefix,jdbcType=VARCHAR},
+      suffix = #{suffix,jdbcType=VARCHAR},
+      physical_addr = #{physicalAddr,jdbcType=VARCHAR},
+      relative_addr = #{relativeAddr,jdbcType=VARCHAR},
+      access_addr = #{accessAddr,jdbcType=VARCHAR},
+      pk_table = #{pkTable,jdbcType=VARCHAR},
+      pk_id = #{pkId,jdbcType=VARCHAR},
+      ct_user_id = #{ctUserId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      allow_del = #{allowDel,jdbcType=DECIMAL},
+      allow_edit = #{allowEdit,jdbcType=DECIMAL},
+      up_user_id = #{upUserId,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      del = #{del,jdbcType=DECIMAL}
+    where attachment_id = #{attachmentId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectPage" parameterType="com.smertbox.api.attachment.model.CmAttachment" resultMap="BaseResultMap" >
+    select * from cm_attachment
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+    <if test="orderByClause!=null and orderByClause!=''">
+    order by ${orderByClause} ${orderByType}
+    </if>
+    <if test="start!=null and start!=-1">
+    limit #{start},#{length}
+    </if>
+  </select>
+  
+  <select id="selectPageSize" parameterType="com.smertbox.api.attachment.model.CmAttachment" resultType="java.lang.Integer" >
+    select count(*) from cm_attachment
+    where 1=1
+    <include refid="Page_Where_Clause"/>
+  </select>
+  
+</mapper>
