@@ -58,17 +58,7 @@
                     <img src="${pageContext.request.contextPath}/kaptcha/image" id="kaptchaImage" />&nbsp;&nbsp;<a href="javascript:void(0);" id="unsee" style="vertical-align:middle;">看不清？换一张</a>
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">登陆</button>
-                <a href="#"><small>忘记密码?</small></a>
-                <p class="text-muted text-center"><small>还没有账号?</small></p>
-                <a class="btn btn-sm btn-white btn-block" href="register.html">创建一个账号</a>
             </form:form>
-            <p class="m-t"> 
-	            <small>
-	            	<strong>&copy; 2016 风暴智盒小组</strong> <br/>
-	            	在技术的前沿，写好玩的代码。<br/>
-                	滇ICP备16005374号-1<br/>
-	            </small> 
-            </p>
         </div>
     </div>
 

@@ -78,36 +78,6 @@
             <div class="header-back one"></div>
 
         </div>
-        <div class="item">
-            <div class="container">
-                <div class="carousel-caption blank"> <h1> 
-                                    移动平台<br/>
-                    Android、iPhone/iPad<br/> 
-                    HTML5、FlatUI
-                    </h1>
-                    <p>
-                        <a class="btn btn-lg btn-primary" target="_blank" href="sign/inpage" role="button">点击体验</a>
-                    </p>
-                </div>
-            </div>
-            <!-- Set background for slide in css -->
-            <div class="header-back two"></div>
-        </div>
-        <div class="item">
-            <div class="container">
-                <div class="carousel-caption blank">
-                   	<h1> 
-                                    组合架构<br/>
-                    MongoDB、Redis、Memcached<br/>
-                    </h1>
-                    <p>
-                        <a class="btn btn-lg btn-primary" target="_blank" href="sign/inpage" role="button">点击体验</a>
-                    </p>
-                </div>
-            </div>
-            <!-- Set background for slide in css -->
-            <div class="header-back three"></div>
-        </div>
     </div>
     <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -424,96 +394,10 @@
                 <p>只为打造流行的、好玩的代码。</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-5 col-lg-offset-1 features-text">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <i class="fa fa-bar-chart big-icon pull-right"></i>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-            </div>
-            <div class="col-lg-5 features-text">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <i class="fa fa-bolt big-icon pull-right"></i>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-5 col-lg-offset-1 features-text">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <i class="fa fa-clock-o big-icon pull-right"></i>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-            </div>
-            <div class="col-lg-5 features-text">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <i class="fa fa-users big-icon pull-right"></i>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-            </div>
-        </div>
     </div>
 
 </section>
 
-<section id="contact" class="gray-section contact">
-    <div class="container">
-        <div class="row m-b-lg">
-            <div class="col-lg-12 text-center">
-                <!-- <div class="navy-line"></div> -->
-               <!--  <h1>体验为先 技术至上</h1>
-                <p>只为打造流行的、好玩的代码。</p> -->
-            </div>
-        </div>
-        <div class="row m-b-lg">
-            <div class="col-lg-3 col-lg-offset-3">
-                <address>
-                    <!--<strong><span class="navy">风暴智盒小组</span></strong><br/>
-                     795 Folsom Ave, Suite 600<br/>
-                    San Francisco, CA 94107<br/>
-                    <abbr title="Phone">电话:</abbr> 暂时没有 -->
-                </address>
-            </div>
-            <div class="col-lg-4">
-                <!-- <p class="text-color">
-                    Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis, totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis, totam corporis ea,
-                </p> -->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <a href="mailto:smertbox@126.com" class="btn btn-primary">发送邮件</a>
-                <p class="m-t-sm">
-                    	或者 关注社交平台	
-                </p>
-                
-                <div class="zc-share">
-					<span id="wx" class="s-shareIcon wx"><i id="wxQrcode" style="display: none;"><img src=""></i></span>
-					<span id="qq" class="s-shareIcon qq"></span>
-					<!-- <span id="qzone" class="s-shareIcon qzone"></span> -->
-					<span id="weibo" class="s-shareIcon weibo"></span>
-				</div>
-               <!--  <ul class="list-inline social-icon">
-                    <li><a href="#"><i class="fa fa-twitter"></i></a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-facebook"></i></a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                    </li>
-                </ul> -->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
-                <p>
-                <strong>&copy; 2016 风暴智盒小组</strong><br/>
-                	在技术的前沿，写好玩的代码。<br/>
-                	滇ICP备16005374号-1<br/> 
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
 <%-- <section>
 	<div class="container">
 		<div class="row" style="padding:5px;" align="center">

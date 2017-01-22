@@ -6,9 +6,5 @@
 	<description>导入applicationContext文件列表</description>
 	<import resource="classpath*:spring-conf/applicationContext-spring.xml" />
 	<import resource="classpath*:spring-security/applicationContext-security.xml" />
-<!-- 	<import resource="classpath*:spring-cache/applicationContext-memcached.xml" /> -->
 	<import resource="classpath*:spring-redis/applicationContext-redis.xml" />
-<!-- 	<import resource="classpath*:spring-email/applicationContext-email.xml" /> -->
-<!-- 	<import resource="classpath*:spring-mongodb/applicationContext-mongodb.xml" /> -->
-	<import resource="classpath*:spring-quartz/applicationContext-quartz.xml" />
 </beans>
